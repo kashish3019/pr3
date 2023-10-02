@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+</head>
+<body>
+    <form action="/recipe/all" method="post">
+        <div id="parent"></div>
+    </form>
+</body>
+<script>
+     let ui = (data)=>{
+        data.map((ele)=>{
+        
+            let name = document.createElement('h1')
+            name.innerHTML=ele.name
+
+            let description=document.createElement('h2')
+            description.innerHTML=ele.description;
+
+            let cookingTime=document.createElement('h2')
+            cookingTime.innerHTML=ele.cookingTime;
+
+            let img=document.createElement('img')
+            img.src=ele.imageUrl;
+
+            let cont =document.createElement('h2')
+            cont.innerHTML=ele.country;
+
+            let veg=document.createElement('h2')
+            veg.innerHTML=ele.veg;           
+            
+            let div = document.createElement('div')
+            div.append(name,description,cookingTime,veg,img,cont,);
+
+            document.getElementById('parent').append(div)
+        })
+     }
+    fetch('http://localhost:8090/recipe/all')
+    .then((ele) => ele.json())
+    .then((data) => ui(data))
+</script>
+</html>
