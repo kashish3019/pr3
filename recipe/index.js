@@ -51,29 +51,38 @@ app.post('/recipe/add',db, (req, res) => {
     id: initialRecipe.length + 1
   };
   initialRecipe.push(newRecipe);
-  res.json(initialRecipe);
+  res.send(initialRecipe);
 });
 
-// patch Route
+// PATCH Route
 
-app.patch('/recipe/update/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedRecipe = req.body;
-  const updatedRecipes = initialRecipe.map(recipe => {
-    if (recipe.id === parseInt(id)) {
-      return { ...recipe, ...updatedRecipe };
+app.patch('/recipe/update/:id',(req,res)=>{
+    let {id} = req.params
+
+    let found = initialRecipe.findIndex((ele)=> ele.id == id)
+    if(found == -1){
+        res.send('This recipe is not available')
     }
-    return recipe;
-  });
-  initialRecipe = updatedRecipes;
-  res.json(initialRecipe);
-});
+    else{
+        initialRecipe[found].name = req.body.name;
+        initialRecipe[found].description = req.body.description ;
+        initialRecipe[found].preparationTime = req.body.preparationTime ;
+        initialRecipe[found].cookingTime = req.body.cookingTime ;
+        initialRecipe[found].imageUrl = req.body.imageUrl ;
+        initialRecipe[found].country = req.body.country ;
+        initialRecipe[found].veg = req.body.veg;
+    }
+    res.status(200).send(initialRecipe)
+
+})
 
 // DELETE Route to delete a recipe by ID
 app.delete('/recipe/delete/:id', (req, res) => {
+
   const { id } = req.params;
   initialRecipe = initialRecipe.filter(recipe => recipe.id != id);
   res.json(initialRecipe);
+
 });
 
 // Query Params Filter
@@ -91,11 +100,14 @@ app.get('/recipe/filter', (req, res) => {
   }
 
   let countryfil = initialRecipe.filter(ele => ele.country == country)
-  let food = initialRecipe.filter((ele) => ele.veg.toString() == veg)
+
+  let food = initialRecipe.filter((ele) => ele.veg == veg)
+
   res.send(countryfil)
+
   res.send(food)
 })
 
-app.listen(8090, () => {
-  console.log('server running on :8090 port');
+app.listen(8090,()=>{
+    console.log('server running : 8090');
 })
