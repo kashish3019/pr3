@@ -38,7 +38,7 @@ app.get('/add', (req, res) => {
   res.sendFile(__dirname + '/recipe.html');
 });
 
-// POST Route to add a new recipe
+// post Route to add a new recipe
 app.post('/recipe/add',db, (req, res) => {
   const newRecipe = {
     name: req.body.name,
@@ -54,7 +54,7 @@ app.post('/recipe/add',db, (req, res) => {
   res.send(initialRecipe);
 });
 
-// PATCH Route
+// patch Route
 
 app.patch('/recipe/update/:id',(req,res)=>{
     let {id} = req.params
@@ -76,7 +76,7 @@ app.patch('/recipe/update/:id',(req,res)=>{
 
 })
 
-// DELETE Route to delete a recipe by ID
+// delete Route to delete a recipe by ID
 app.delete('/recipe/delete/:id', (req, res) => {
 
   const { id } = req.params;
